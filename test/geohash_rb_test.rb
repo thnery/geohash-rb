@@ -35,17 +35,17 @@ class GeohashRbTest < Minitest::Test
     end
   end
 
-  def test_four_neighbors
+  def test_parent_neighbors
     {
       '7nx4jpm' => ["7nx4jn", "7nx4jp", "7nx4jq", "7nx4jr"],
       '7nx4jp6' => ["7nx4hz", "7nx4jp", "7nx4hy", "7nx4jn"],
       '7nx4jpb' => ["7nx4hz", "7nx4jp", "7nx4kb", "7nx4m0"],
       '7nx4jpz' => ["7nx4jp", "7nx4m0", "7nx4m2", "7nx4jr"]
-    }.each do |geaosh, four_neighbors|
-      assert_equal GeohashRb.neighbors(geaosh, 4).sort, four_neighbors.sort
+    }.each do |geohash, parent_neighbors|
+      assert_equal GeohashRb.parent_neighbors("7nx4jpm").sort, ["7nx4jn", "7nx4jp", "7nx4jq", "7nx4jr"].sort
     end
   end
-  
+
   def test_adjacent
     {
       ["dqcjq", :top]    => 'dqcjw',

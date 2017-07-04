@@ -1,9 +1,5 @@
 # GeohashRb
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/geohash_rb`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
-
 ## Installation
 
 Add this line to your application's Gemfile:
@@ -34,15 +30,15 @@ GeohashRb.encode(-8.04542542, -34.92897034, 7)
 # => 7nx4jpm
 ```
 
-### Getting 8 Neighbors
+### Getting Neighbors
 ```ruby
 GeohashRb.neighbors("7nx4jpm")
 # => ["7nx4jpt", "7nx4jpw", "7nx4jpq", "7nx4jpn", "7nx4jpj", "7nx4jph", "7nx4jpk", "7nx4jps"]
 ```
 
-### Getting 4 Neighbors
+### Getting Parent Neighbors
 ```ruby
-GeohashRb.neighbors("7nx4jpm", 4)
+GeohashRb.parent_neighbors("7nx4jpm")
 # => ["7nx4jn", "7nx4jq", "7nx4jr", "7nx4jp"]
 ```
 

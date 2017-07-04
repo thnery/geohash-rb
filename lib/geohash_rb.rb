@@ -31,29 +31,30 @@ module GeohashRb
   end
   module_function :encode
 
-  def neighbors(geohash, n=8)
-    if n == 8
-      [[:top, :right], [:right, :bottom], [:bottom, :left], [:left, :top]].map{ |dirs|
-        point = adjacent(geohash, dirs[0])
-        [point, adjacent(point, dirs[1])]
-      }.flatten
-    elsif n == 4
-      parent = geohash[0...-1]
-      lat1, lng1 = decode(geohash).reduce { |a,b| [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2]  }
-      lat2, lng2 = decode(parent).reduce { |a,b| [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2]  }
-
-      top, top_right, right, bottom_right, bottom, bottom_left, left, top_left = neighbors(parent, 8)
-
-      return [top, top_right, right, parent] if lat1 > lat2 and lng1 > lng2
-      return [top, top_left, left, parent] if lat1 > lat2
-      return [bottom, bottom_right, right, parent] if lng1 > lng2
-      return [bottom, bottom_left, left, parent]
-    end
+  def neighbors(geohash)
+    [[:top, :right], [:right, :bottom], [:bottom, :left], [:left, :top]].map{ |dirs|
+      point = adjacent(geohash, dirs[0])
+      [point, adjacent(point, dirs[1])]
+    }.flatten
   end
   module_function :neighbors
 
+  def parent_neighbors(geohash)
+    parent = geohash[0...-1]
+    lat1, lng1 = decode(geohash).reduce { |a,b| [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2]  }
+    lat2, lng2 = decode(parent).reduce { |a,b| [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2]  }
+
+    top, top_right, right, bottom_right, bottom, bottom_left, left, top_left = neighbors(parent)
+
+    return [top, top_right, right, parent] if lat1 > lat2 and lng1 > lng2
+    return [top, top_left, left, parent] if lat1 > lat2
+    return [bottom, bottom_right, right, parent] if lng1 > lng2
+    return [bottom, bottom_left, left, parent]
+  end
+  module_function :parent_neighbors
+
   def adjacent(geohash, dir)
-    base, lastChr = geohash[0..-2], geohash[-1,1]
+    base, lastChr = geohash[0...-1], geohash[-1,1]
     type = (geohash.length % 2)==1 ? :odd : :even
     if BORDERS[dir][type].include?(lastChr)
       base = adjacent(base, dir)
