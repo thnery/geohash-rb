@@ -1,4 +1,5 @@
 require "geohash_rb/version"
+require "geohash_rb/proximity"
 
 module GeohashRb
   def decode(geohash)
